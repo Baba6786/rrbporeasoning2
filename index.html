@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ExamPro • RRB PO 2026 - Reasoning Ability (1-40)</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#1e2937;}
+        .page{min-height:100vh;display:none;flex-direction:column;}
+        .active{display:flex;}
+
+        #login{background:linear-gradient(135deg,#1e40af,#3b82f6);align-items:center;justify-content:center;}
+        .login-box{background:white;width:92%;max-width:420px;border-radius:24px;padding:40px 30px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.25);}
+        .logo{font-size:48px;font-weight:900;color:#2563eb;margin-bottom:20px;}
+
+        #instructions{position:relative;}
+        .start-btn{position:fixed;bottom:0;left:0;right:0;background:#2563eb;color:white;padding:22px;font-size:22px;font-weight:700;text-align:center;border:none;cursor:pointer;box-shadow:0 -5px 20px rgba(37,99,235,0.4);z-index:100;}
+
+        header{background:white;padding:10px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100;}
+        .header-logo{font-size:16px;font-weight:800;color:#2563eb;}
+
+        #test{flex-direction:column;height:100vh;overflow:hidden;}
+        .palette{background:white;padding:10px;overflow-x:auto;white-space:nowrap;display:flex;gap:12px;border-bottom:1px solid #e2e8f0;flex-shrink:0;position:sticky;top:58px;z-index:90;}
+        .q-dot{width:40px;height:40px;border-radius:50%;background:#f1f5f9;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex-shrink:0;cursor:pointer;}
+        .q-dot.done{background:#22c55e;color:white;border-color:#22c55e;}
+        .q-dot.current{border-color:#2563eb;background:#dbeafe;}
+
+        .test-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+        .question-area{flex:1;overflow-y:auto;padding:28px 20px;background:white;}
+        .direction{font-weight:700;font-size:1.00rem;margin-bottom:0.8rem;color:#1e2937;}
+        .para{font-weight:500;font-size:1.00rem;line-height:1.6;margin-bottom:1.6rem;color:#1e2937;}
+        .q-text{font-size:1.00rem;font-weight:600;margin-bottom:28px;line-height:1.45;}
+        .option{padding:18px 24px;margin-bottom:14px;border:2px solid #e2e8f0;border-radius:16px;font-size:1.00rem;cursor:pointer;transition:0.2s;}
+        .option:hover,.option.selected{border-color:#2563eb;background:#eff6ff;}
+        .bottom-nav{padding:16px 20px;background:white;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;flex-shrink:0;position:sticky;bottom:0;z-index:90;}
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="page active">
+    <div class="login-box">
+        <div class="logo">ExamPro</div>
+        <h1 style="font-size:28px;margin:30px 0 20px;">RRB PO 2026<br>Reasoning Ability</h1>
+        <div style="text-align:left;margin-bottom:15px;">
+            <label style="font-size:14px;color:#64748b;">User ID</label>
+            <div style="padding:16px 20px;background:#f1f5f9;border-radius:12px;font-size:18px;font-weight:600;">1011011010</div>
+        </div>
+        <div style="text-align:left;">
+            <label style="font-size:14px;color:#64748b;">Password</label>
+            <input id="pass" type="password" placeholder="Enter Password" style="width:100%;padding:16px;border:2px solid #e2e8f0;border-radius:12px;font-size:18px;">
+        </div>
+        <button onclick="login()" style="margin-top:30px;width:100%;padding:18px;background:#2563eb;color:white;border:none;border-radius:16px;font-size:20px;font-weight:700;">Login</button>
+    </div>
+</div>
+
+<!-- INSTRUCTIONS -->
+<div id="instructions" class="page">
+    <div style="max-width:800px;margin:40px auto;padding:20px;text-align:center;">
+        <div style="font-size:42px;font-weight:900;color:#2563eb;margin-bottom:20px;">ExamPro</div>
+        <h1 style="font-size:32px;margin-bottom:10px;">RRB PO 2026<br>Reasoning Ability</h1>
+        <p style="color:#64748b;font-size:20px;">25 Minutes • 40 Questions • 1 Mark each</p>
+        <div style="margin:60px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+            <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.05);">⏰<br><b style="font-size:32px;">25 Min</b><br>Duration</div>
+            <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.05);">📋<br><b style="font-size:32px;">40</b><br>Questions</div>
+            <div style="background:white;padding:30px;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.05);">−0.25<br><b style="font-size:32px;">Negative</b><br>Marking</div>
+        </div>
+    </div>
+    <button class="start-btn" onclick="startTest()">Start Test Now →</button>
+</div>
+
+<!-- TEST PAGE -->
+<div id="test" class="page">
+    <header>
+        <div class="header-logo">RRB PO 2026 Reasoning</div>
+        <div id="timer" style="font-size:20px;font-weight:700;font-family:monospace;color:#1e2937;padding: 10px;">24:59</div>
+        <button onclick="submitTest()" style="background:#ef4444;color:white;padding:10px 30px;border:none;border-radius:12px;font-weight:700;cursor:pointer;">Submit</button>
+    </header>
+    <div class="palette" id="palette"></div>
+    <div class="test-main">
+        <div class="question-area" id="question-area"></div>
+        <div class="bottom-nav">
+            <button onclick="prevQ()" style="padding:14px 40px;border:2px solid #cbd5e1;background:white;border-radius:16px;font-weight:600;font-size:14px;">← Previous</button>
+            <button onclick="nextQ()" style="padding:14px 50px;background:#2563eb;color:white;border:none;border-radius:16px;font-weight:600;font-size:14px;">Next →</button>
+        </div>
+    </div>
+</div>
+
+<!-- SCORE PAGE -->
+<div id="score" class="page" style="background:#f8fafc; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:white; max-width:480px; width:100%; border-radius:24px; padding:40px 30px; box-shadow:0 20px 60px rgba(0,0,0,0.1); text-align:center;">
+        <h1 style="font-size:28px; color:#1e2937; margin-bottom:10px;">Test Completed!</h1>
+        <p style="color:#64748b; margin-bottom:30px;">RRB PO 2026 - Reasoning Ability</p>
+        
+        <div style="margin:30px 0; padding:30px; background:#f1f5f9; border-radius:20px;">
+            <div style="font-size:14px; color:#64748b; margin-bottom:8px;">Your Score</div>
+            <div id="score-main" style="font-size:52px; font-weight:900; color:#2563eb; line-height:1;">0.00</div>
+            <div style="font-size:15px; color:#64748b;">out of 40</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:30px 0;">
+            <div style="background:#f1f5f9; padding:20px; border-radius:16px;">
+                <div style="color:#22c55e; font-size:28px; font-weight:700;" id="correct">0</div>
+                <div style="font-size:14px; color:#64748b;">Correct</div>
+            </div>
+            <div style="background:#f1f5f9; padding:20px; border-radius:16px;">
+                <div style="color:#ef4444; font-size:28px; font-weight:700;" id="wrong">0</div>
+                <div style="font-size:14px; color:#64748b;">Wrong</div>
+            </div>
+        </div>
+
+        <div style="margin:30px 0;">
+            <div style="font-size:14px; color:#64748b; margin-bottom:10px;">Accuracy</div>
+            <div style="position:relative; width:180px; height:180px; margin:0 auto;">
+                <svg width="180" height="180" style="transform:rotate(-90deg);">
+                    <circle cx="90" cy="90" r="82" fill="none" stroke="#e2e8f0" stroke-width="16"></circle>
+                    <circle id="pie" cx="90" cy="90" r="82" fill="none" 
+                            stroke="#2563eb" stroke-width="16"
+                            stroke-dasharray="515" stroke-dashoffset="515"
+                            stroke-linecap="round"></circle>
+                </svg>
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;">
+                    <div id="accuracy" style="font-size:32px; font-weight:700; color:#1e2937;">0</div>
+                    <div style="font-size:14px; color:#64748b;">%</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:15px; margin-top:40px;">
+            <button onclick="showAnalysis()" 
+                    style="flex:1; padding:16px; background:#2563eb; color:white; border:none; border-radius:16px; font-weight:700; font-size:17px; cursor:pointer;">
+                View Detailed Analysis
+            </button>
+            <button onclick="restart()" 
+                    style="flex:1; padding:16px; background:white; color:#1e2937; border:2px solid #cbd5e1; border-radius:16px; font-weight:700; font-size:17px; cursor:pointer;">
+                Restart Test
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ANALYSIS PAGE -->
+<div id="analysis" class="page" style="flex-direction:column;">
+    <header style="background:white; padding:15px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e2e8f0; position:sticky; top:0; z-index:100;">
+        <div style="font-weight:700; color:#2563eb;">Detailed Analysis</div>
+        <button onclick="backToScore()" style="background:#ef4444; color:white; border:none; padding:8px 20px; border-radius:12px; cursor:pointer;">Back to Score</button>
+    </header>
+    <div id="analysis-content" style="flex:1; overflow-y:auto; padding:20px; background:#f8fafc;"></div>
+</div>
+
+<script>
+// ====================== 40 QUESTIONS - RRB PO 2026 REASONING ABILITY (01 Aug 2021 Memory Based) ======================
+const questions = [
+    {direction:"Directions (1-5): Study the following information carefully and answer the below questions.",para:"Ten persons- A, B, C, D, E, F, G, H, J, and K are sitting on the circular table facing the center. All the information is not necessarily in the same order.<br>Two persons sit between A and E. Only three persons sit between E and K. C sits third to the left of D. Only four persons sit between E and D. F sits immediate left of G. G neither sit adjacent to E nor D. F and D are not immediate neighbors. B sits second to the left of J. The number of persons sits between H and J is the same as the number of persons sits between H and F.",q:"Q1. How many persons sit between C and B when counted from the left of C?",opt:["(a) Two","(b) Three","(c) One","(d) No one","(e) Four"],ans:0,exp:"Two"},
+    {direction:"Directions (1-5): Study the following information carefully and answer the below questions.",para:"Ten persons- A, B, C, D, E, F, G, H, J, and K are sitting on the circular table facing the center. All the information is not necessarily in the same order.<br>Two persons sit between A and E. Only three persons sit between E and K. C sits third to the left of D. Only four persons sit between E and D. F sits immediate left of G. G neither sit adjacent to E nor D. F and D are not immediate neighbors. B sits second to the left of J. The number of persons sits between H and J is the same as the number of persons sits between H and F.",q:"Q2. If C is related to H and D is related to F in a certain way. Then who among the following is related to E?",opt:["(a) G","(b) F","(c) K","(d) A","(e) D"],ans:0,exp:"G"},
+    {direction:"Directions (1-5): Study the following information carefully and answer the below questions.",para:"Ten persons- A, B, C, D, E, F, G, H, J, and K are sitting on the circular table facing the center. All the information is not necessarily in the same order.<br>Two persons sit between A and E. Only three persons sit between E and K. C sits third to the left of D. Only four persons sit between E and D. F sits immediate left of G. G neither sit adjacent to E nor D. F and D are not immediate neighbors. B sits second to the left of J. The number of persons sits between H and J is the same as the number of persons sits between H and F.",q:"Q3. Who among the following person sits fifth to the right of H?",opt:["(a) E","(b) B","(c) J","(d) C","(e) A"],ans:1,exp:"B"},
+    {direction:"Directions (1-5): Study the following information carefully and answer the below questions.",para:"Ten persons- A, B, C, D, E, F, G, H, J, and K are sitting on the circular table facing the center. All the information is not necessarily in the same order.<br>Two persons sit between A and E. Only three persons sit between E and K. C sits third to the left of D. Only four persons sit between E and D. F sits immediate left of G. G neither sit adjacent to E nor D. F and D are not immediate neighbors. B sits second to the left of J. The number of persons sits between H and J is the same as the number of persons sits between H and F.",q:"Q4. What is the position of H with respect to K?",opt:["(a) Second to the left","(b) Second to the Right","(c) Third to the right","(d) Fourth to the right","(e) Immediate left"],ans:1,exp:"Second to the Right"},
+    {direction:"Directions (1-5): Study the following information carefully and answer the below questions.",para:"Ten persons- A, B, C, D, E, F, G, H, J, and K are sitting on the circular table facing the center. All the information is not necessarily in the same order.<br>Two persons sit between A and E. Only three persons sit between E and K. C sits third to the left of D. Only four persons sit between E and D. F sits immediate left of G. G neither sit adjacent to E nor D. F and D are not immediate neighbors. B sits second to the left of J. The number of persons sits between H and J is the same as the number of persons sits between H and F.",q:"Q5. Four of the following are alike in a certain way. Who among the following one does not belong to the group?",opt:["(a) EG","(b) FD","(c) HC","(d) AJ","(e) GH"],ans:4,exp:"GH"},
+
+    {direction:"Directions (6-8): Study the following information carefully and answer the below questions.",para:"Six persons- A, B, C, D, E, and F have different weights and are arranged in descending order. F is heavier than B and lighter than D. A is lighter than E who is heavier than C. Both A and C are heavier than D. The lightest person's weight is 51kg. D has 14kg more than the lightest person.",q:"Q6. How many persons are heavier than B?",opt:["(a) Two","(b) Three","(c) Four","(d) Five","(e) One"],ans:3,exp:"Five"},
+    {direction:"Directions (6-8): Study the following information carefully and answer the below questions.",para:"Six persons- A, B, C, D, E, and F have different weights and are arranged in descending order. F is heavier than B and lighter than D. A is lighter than E who is heavier than C. Both A and C are heavier than D. The lightest person's weight is 51kg. D has 14kg more than the lightest person.",q:"Q7. What is the possible weight of F?",opt:["(a) 50 kg","(b) 66 kg","(c) 62 kg","(d) 68 kg","(e) 48 kg"],ans:2,exp:"62 kg"},
+    {direction:"Directions (6-8): Study the following information carefully and answer the below questions.",para:"Six persons- A, B, C, D, E, and F have different weights and are arranged in descending order. F is heavier than B and lighter than D. A is lighter than E who is heavier than C. Both A and C are heavier than D. The lightest person's weight is 51kg. D has 14kg more than the lightest person.",q:"Q8. If the weight of A is 8kg more than the average weight of B and D. Then which of the following statement is true?<br>I) A is lighter than C<br>II) Only one person heavier than A<br>III) A's weight is 66kg.",opt:["(a) Only I and III","(b) Only II and III","(c) Only I and II","(d) Only II","(e) Only I"],ans:0,exp:"Only I and III"},
+
+    {direction:"",para:"",q:"Q9. If the vowels in the word “SNITCHED” are changed to the next letter and consonants are changed to the previous letter in the alphabetical series then which of the following represented letters are repeated twice?",opt:["(a) D and C","(b) N and T","(c) S and T","(d) E and D","(e) None of the above"],ans:4,exp:"None of the above"},
+    {direction:"",para:"",q:"Q10. How many pairs of digits are there in the number “864351792” each of which has as many digits between them as in the numerical series(Both forward and backward direction)?",opt:["(a) One","(b) Two","(c) Three","(d) Four","(e) More than four"],ans:4,exp:"More than four"},
+
+    {direction:"Directions (11-15): Study the following statements and then decide which of the given conclusions logically follows from the given statements disregarding commonly known facts.",para:"",q:"Q11. Statement<br>Only a few Browser is Bandwidth<br>All Bandwidth is Broadband<br>No Broadband is Internet<br>Conclusion<br>I. No Internet is Bandwidth<br>II. Some Broadband is Browser",opt:["(a) Only I follow","(b) Either I or II follow","(c) Only II follows","(d) Both I and II follow","(e) Neither I nor II follows"],ans:3,exp:"Both I and II follow"},
+    {direction:"Directions (11-15): Study the following statements and then decide which of the given conclusions logically follows from the given statements disregarding commonly known facts.",para:"",q:"Q12. Statement<br>Only a few Modem is Disk<br>No Disk is Memory<br>All Memory is Reboot<br>Conclusion<br>I. Some Disk is Reboot is a possibility<br>II. All Modem can be Memory",opt:["(a) Only I follow","(b) Either I or II follow","(c) Only II follows","(d) Both I and II follow","(e) Neither I nor II follows"],ans:0,exp:"Only I follow"},
+    {direction:"Directions (11-15): Study the following statements and then decide which of the given conclusions logically follows from the given statements disregarding commonly known facts.",para:"",q:"Q13. Statement<br>Only a few consume are customs<br>No investor is consume<br>Few consume are lenders<br>Conclusion<br>I. All Lenders can never be investor<br>II. All customs are investors",opt:["(a) Only I follow","(b) Either I or II follow","(c) Only II follows","(d) Both I and II follow","(e) Neither I nor II follows"],ans:0,exp:"Only I follow"},
+    {direction:"Directions (11-15): Study the following statements and then decide which of the given conclusions logically follows from the given statements disregarding commonly known facts.",para:"",q:"Q14. Statement<br>Only a few Dollar is Euro<br>Some Euro is Pound<br>All Pound is Franc<br>Conclusion<br>I. Some Franc is Euro<br>II. All Dollar can be Pound",opt:["(a) Only I follow","(b) Only II follows","(c) Either I or II follows","(d) Neither I nor II follows","(e) Both I and II follows"],ans:4,exp:"Neither I nor II follows"},
+    {direction:"Directions (11-15): Study the following statements and then decide which of the given conclusions logically follows from the given statements disregarding commonly known facts.",para:"",q:"Q15. Statement<br>Only a few Lek is Dinar<br>All Lek is Taka<br>No Taka is Afghani<br>Conclusion<br>I. No Lek is Afghani<br>II. All Lek being Dinar is a possibility",opt:["(a) Only I follow","(b) Either I or II follow","(c) Only II follows","(d) Both I and II follow","(e) Neither I nor II follows"],ans:0,exp:"Only I follow"},
+
+    {direction:"Directions (16-20): Study the following information carefully and answer the below questions",para:"Nine persons- J, K, L, M, N, O, P, Q, and R are working in the three different departments- Production, HR and Finance but not necessarily in the same order. Minimum two person maximum four persons are working in each department.<br>J works with Q. Q neither works in Production nor Finance. L does not work with J. K neither works with L nor Q. P neither works in Finance nor HR. The number of persons works in the Finance department is one less than the number of persons work in the HR department. P works with only one person. N and O work in the same department but not with K and L. M neither works with L nor O.",q:"Q16. Who among the following person works in the production department?",opt:["(a) P","(b) J","(c) N","(d) M","(e) R"],ans:0,exp:"P"},
+    {direction:"Directions (16-20): Study the following information carefully and answer the below questions",para:"Nine persons- J, K, L, M, N, O, P, Q, and R are working in the three different departments- Production, HR and Finance but not necessarily in the same order. Minimum two person maximum four persons are working in each department.<br>J works with Q. Q neither works in Production nor Finance. L does not work with J. K neither works with L nor Q. P neither works in Finance nor HR. The number of persons works in the Finance department is one less than the number of persons work in the HR department. P works with only one person. N and O work in the same department but not with K and L. M neither works with L nor O.",q:"Q17. If person X is joined in the HR department then who among the following person works with X?",opt:["(a) K","(b) R","(c) M","(d) O","(e) P"],ans:3,exp:"O"},
+    {direction:"Directions (16-20): Study the following information carefully and answer the below questions",para:"Nine persons- J, K, L, M, N, O, P, Q, and R are working in the three different departments- Production, HR and Finance but not necessarily in the same order. Minimum two person maximum four persons are working in each department.<br>J works with Q. Q neither works in Production nor Finance. L does not work with J. K neither works with L nor Q. P neither works in Finance nor HR. The number of persons works in the Finance department is one less than the number of persons work in the HR department. P works with only one person. N and O work in the same department but not with K and L. M neither works with L nor O.",q:"Q18. Which of the following statement is true?",opt:["(a) P and L works in the Finance department","(b) M and O work in the same department","(c) J and M works different department","(d) Four-person works in the Production department","(e) Only two persons work in the Finance department"],ans:1,exp:"M and O work in the same department"},
+    {direction:"Directions (16-20): Study the following information carefully and answer the below questions",para:"Nine persons- J, K, L, M, N, O, P, Q, and R are working in the three different departments- Production, HR and Finance but not necessarily in the same order. Minimum two person maximum four persons are working in each department.<br>J works with Q. Q neither works in Production nor Finance. L does not work with J. K neither works with L nor Q. P neither works in Finance nor HR. The number of persons works in the Finance department is one less than the number of persons work in the HR department. P works with only one person. N and O work in the same department but not with K and L. M neither works with L nor O.",q:"Q19. Who among the following person works with N?<br>I. J<br>II. O<br>III. L<br>IV. R",opt:["(a) Only I and II","(b) Only III and IV","(c) Only I and III","(d) Only II and IV","(e) Only I and IV"],ans:3,exp:"Only II and IV"},
+    {direction:"Directions (16-20): Study the following information carefully and answer the below questions",para:"Nine persons- J, K, L, M, N, O, P, Q, and R are working in the three different departments- Production, HR and Finance but not necessarily in the same order. Minimum two person maximum four persons are working in each department.<br>J works with Q. Q neither works in Production nor Finance. L does not work with J. K neither works with L nor Q. P neither works in Finance nor HR. The number of persons works in the Finance department is one less than the number of persons work in the HR department. P works with only one person. N and O work in the same department but not with K and L. M neither works with L nor O.",q:"Q20. Four of the following are alike in a certain way. Which of the following does not belongs to the group?",opt:["(a) PR","(b) ML","(c) JK","(d) OM","(e) QN"],ans:1,exp:"ML"},
+
+    {direction:"Directions (21-25): Study the following information carefully and answer the below questions",para:"In a certain coding language,<br>“Carriage Forklift Rowboat Train” means “rikraont”,<br>“Subway Carriage Rowboat Bus” means “aoburibz”,<br>“Van Forklift Crane Boat” means “kr nr to ne”,<br>“Carriage Subway Bus Crane” means “ribubz nr”",q:"Q21. Which of the following is the code for the word “Forklift” in the given code language?",opt:["(a) kr","(b) ao","(c) nt","(d) ri","(e) None of these"],ans:0,exp:"kr"},
+    {direction:"Directions (21-25): Study the following information carefully and answer the below questions",para:"In a certain coding language,<br>“Carriage Forklift Rowboat Train” means “rikraont”,<br>“Subway Carriage Rowboat Bus” means “aoburibz”,<br>“Van Forklift Crane Boat” means “kr nr to ne”,<br>“Carriage Subway Bus Crane” means “ribubz nr”",q:"Q22. What may be the possible code for the phrase “Van Bus” in the given code language?",opt:["(a) tz bu","(b) bz ne","(c) to ne","(d) bz nr","(e) ribz"],ans:3,exp:"bz nr"},
+    {direction:"Directions (21-25): Study the following information carefully and answer the below questions",para:"In a certain coding language,<br>“Carriage Forklift Rowboat Train” means “rikraont”,<br>“Subway Carriage Rowboat Bus” means “aoburibz”,<br>“Van Forklift Crane Boat” means “kr nr to ne”,<br>“Carriage Subway Bus Crane” means “ribubz nr”",q:"Q23. What does the code “ao” represent in the given code language?",opt:["(a) Bus","(b) Subway","(c) Carriage","(d) Rowboat","(e) Train"],ans:3,exp:"Rowboat"},
+    {direction:"Directions (21-25): Study the following information carefully and answer the below questions",para:"In a certain coding language,<br>“Carriage Forklift Rowboat Train” means “rikraont”,<br>“Subway Carriage Rowboat Bus” means “aoburibz”,<br>“Van Forklift Crane Boat” means “kr nr to ne”,<br>“Carriage Subway Bus Crane” means “ribubz nr”",q:"Q24. If “Van Goat” is coded as “tz to”, then what does the code “ne” represent in the given code language?",opt:["(a) Bus","(b) Train","(c) Carriage","(d) Boat","(e) Subway"],ans:3,exp:"Boat"},
+    {direction:"Directions (21-25): Study the following information carefully and answer the below questions",para:"In a certain coding language,<br>“Carriage Forklift Rowboat Train” means “rikraont”,<br>“Subway Carriage Rowboat Bus” means “aoburibz”,<br>“Van Forklift Crane Boat” means “kr nr to ne”,<br>“Carriage Subway Bus Crane” means “ribubz nr”",q:"Q25. How many codes for a word are definitely found as per given information?",opt:["(a) 5","(b) 8","(c) 9","(d) 10","(e) None of these"],ans:2,exp:"9"},
+
+    {direction:"Directions (26-30): Study the following information carefully and answer the below questions",para:"Ten persons- A, B, C, D, E, P, Q, R, S, and T are taking the seminar on two different dates either 5 or 22 of different months- January, February, March, April, and May of the same year(2021). All the information is not necessarily in the same order.<br>E takes the seminar on an odd number of days of the month which has less than 31 days. R takes two persons before E. The number of persons takes before R is the same as the number of persons takes after B. Only four persons take between B and T. C takes the seminar on an even number date immediately before Q. P takes two persons after C. P does not take adjacent to R. S takes before D but after A. At least one person takes between S and D.",q:"Q26. Who among the following person takes the seminar on March 5th?",opt:["(a) P","(b) Q","(c) E","(d) T","(e) S"],ans:3,exp:"T"},
+    {direction:"Directions (26-30): Study the following information carefully and answer the below questions",para:"Ten persons- A, B, C, D, E, P, Q, R, S, and T are taking the seminar on two different dates either 5 or 22 of different months- January, February, March, April, and May of the same year(2021). All the information is not necessarily in the same order.<br>E takes the seminar on an odd number of days of the month which has less than 31 days. R takes two persons before E. The number of persons takes before R is the same as the number of persons takes after B. Only four persons take between B and T. C takes the seminar on an even number date immediately before Q. P takes two persons after C. P does not take adjacent to R. S takes before D but after A. At least one person takes between S and D.",q:"Q27. Four of the following are alike in a certain way. Who among the following does not belongs to the group?",opt:["(a) RE","(b) EA","(c) SC","(d) QD","(e) PB"],ans:4,exp:"PB"},
+    {direction:"Directions (26-30): Study the following information carefully and answer the below questions",para:"Ten persons- A, B, C, D, E, P, Q, R, S, and T are taking the seminar on two different dates either 5 or 22 of different months- January, February, March, April, and May of the same year(2021). All the information is not necessarily in the same order.<br>E takes the seminar on an odd number of days of the month which has less than 31 days. R takes two persons before E. The number of persons takes before R is the same as the number of persons takes after B. Only four persons take between B and T. C takes the seminar on an even number date immediately before Q. P takes two persons after C. P does not take adjacent to R. S takes before D but after A. At least one person takes between S and D.",q:"Q28. How many persons taking seminar between S and D?",opt:["(a) Two","(b) Three","(c) Six","(d) Five","(e) Four"],ans:1,exp:"Three"},
+    {direction:"Directions (26-30): Study the following information carefully and answer the below questions",para:"Ten persons- A, B, C, D, E, P, Q, R, S, and T are taking the seminar on two different dates either 5 or 22 of different months- January, February, March, April, and May of the same year(2021). All the information is not necessarily in the same order.<br>E takes the seminar on an odd number of days of the month which has less than 31 days. R takes two persons before E. The number of persons takes before R is the same as the number of persons takes after B. Only four persons take between B and T. C takes the seminar on an even number date immediately before Q. P takes two persons after C. P does not take adjacent to R. S takes before D but after A. At least one person takes between S and D.",q:"Q29. Which of the following month and dates does D take the seminar?",opt:["(a) May 5th","(b) April 5th","(c) May 22nd","(d) February 22nd","(e) January 22nd"],ans:4,exp:"February 22nd"},
+    {direction:"Directions (26-30): Study the following information carefully and answer the below questions",para:"Ten persons- A, B, C, D, E, P, Q, R, S, and T are taking the seminar on two different dates either 5 or 22 of different months- January, February, March, April, and May of the same year(2021). All the information is not necessarily in the same order.<br>E takes the seminar on an odd number of days of the month which has less than 31 days. R takes two persons before E. The number of persons takes before R is the same as the number of persons takes after B. Only four persons take between B and T. C takes the seminar on an even number date immediately before Q. P takes two persons after C. P does not take adjacent to R. S takes before D but after A. At least one person takes between S and D.",q:"Q30. Who among the following person takes immediately before Q?",opt:["(a) P","(b) S","(c) T","(d) C","(e) D"],ans:3,exp:"C"},
+
+    {direction:"Directions (31-34): In each of the following questions, the relationship between different elements is shown in the statements followed by two conclusions. Find the conclusion which is definitely true.",para:"",q:"Q31. Statements: P ≥ N = G > T < K > L<br>Conclusion: I. G < K II. P > T",opt:["(a) If only conclusion I follows.","(b) If only conclusion II follows.","(c) If either conclusion I or II follows.","(d) If neither conclusion I nor II follows.","(e) If both conclusion I and II follow."],ans:3,exp:"Neither follows"},
+    {direction:"Directions (31-34): In each of the following questions, the relationship between different elements is shown in the statements followed by two conclusions. Find the conclusion which is definitely true.",para:"",q:"Q32. Statements: Q > K > L ≤ C = H > I<br>Conclusion: I. K > I II. H > L",opt:["(a) If only conclusion I follows.","(b) If only conclusion II follows.","(c) If either conclusion I or II follows.","(d) If neither conclusion I nor II follows.","(e) If both conclusion I and II follow."],ans:0,exp:"Only I follows"},
+    {direction:"Directions (31-34): In each of the following questions, the relationship between different elements is shown in the statements followed by two conclusions. Find the conclusion which is definitely true.",para:"",q:"Q33. Statements: G ≥ X ≥ T = K = L > O<br>Conclusion: I. G > O II. G > K",opt:["(a) If only conclusion I follows.","(b) If only conclusion II follows.","(c) If either conclusion I or II follows.","(d) If neither conclusion I nor II follows.","(e) If both conclusion I and II follow."],ans:0,exp:"Only I follows"},
+    {direction:"Directions (31-34): In each of the following questions, the relationship between different elements is shown in the statements followed by two conclusions. Find the conclusion which is definitely true.",para:"",q:"Q34. Statements: C > R; T > L; J ≥ R; C ≥ K = T<br>Conclusions: I. T > J II. R < K",opt:["(a) If only conclusion I follows.","(b) If only conclusion II follows.","(c) If either conclusion I or II follows.","(d) If neither conclusion I nor II follows.","(e) If both conclusion I and II follow."],ans:3,exp:"Neither follows"},
+
+    {direction:"Directions (35): Six persons- L, M, N, O, P and Q are living in the six-storey building but not necessarily in the same order. The lowermost floor is numbered as one and the topmost floor is numbered as six.",para:"O lives three floors above P. Only one floor between P and Q. M lives two floors above Q. The number of people lives between M and O is one less than between L and N. L lives above N.",q:"Q35. Who among the following person lives on the third floor?",opt:["(a) Q","(b) M","(c) O","(d) N","(e) L"],ans:2,exp:"O"},
+
+    {direction:"Directions (36-40): Study the following information carefully and answer the below questions.",para:"Seven persons- A, B, C, D, E, F, and G attend the meeting on different days of the week starting from Monday to Sunday. They like different fruits- Guava, Orange, Apple, Kiwi, Mango, Banana, and Watermelon. All the information is not necessarily in the same order.<br>B attends three days before the one who likes Watermelon. At least two persons attend before B. Only three persons attend between B and C. The one who likes Kiwi attends immediately after the one who likes Apple. B neither likes Kiwi nor Apple. The one who likes Banana attends two days before D. D neither likes Watermelon nor Kiwi. A attends immediately before F. A does not attend on Monday. G neither like Banana nor Mango. C neither like Mango nor Guava.",q:"Q36. Which of the following day did A attend the meeting?",opt:["(a) Wednesday","(b) Sunday","(c) Tuesday","(d) Friday","(e) Monday"],ans:3,exp:"Friday"},
+    {direction:"Directions (36-40): Study the following information carefully and answer the below questions.",para:"Seven persons- A, B, C, D, E, F, and G attend the meeting on different days of the week starting from Monday to Sunday. They like different fruits- Guava, Orange, Apple, Kiwi, Mango, Banana, and Watermelon. All the information is not necessarily in the same order.<br>B attends three days before the one who likes Watermelon. At least two persons attend before B. Only three persons attend between B and C. The one who likes Kiwi attends immediately after the one who likes Apple. B neither likes Kiwi nor Apple. The one who likes Banana attends two days before D. D neither likes Watermelon nor Kiwi. A attends immediately before F. A does not attend on Monday. G neither like Banana nor Mango. C neither like Mango nor Guava.",q:"Q37. Which of the following combination is true?<br>I. Apple-D<br>II. Watermelon-Saturday<br>III. Wednesday-D<br>IV. Orange-E",opt:["(a) Only II and III","(b) Only III and IV","(c) Only I and II","(d) Only II and IV","(e) All I, II, III and IV"],ans:4,exp:"Only II and IV"},
+    {direction:"Directions (36-40): Study the following information carefully and answer the below questions.",para:"Seven persons- A, B, C, D, E, F, and G attend the meeting on different days of the week starting from Monday to Sunday. They like different fruits- Guava, Orange, Apple, Kiwi, Mango, Banana, and Watermelon. All the information is not necessarily in the same order.<br>B attends three days before the one who likes Watermelon. At least two persons attend before B. Only three persons attend between B and C. The one who likes Kiwi attends immediately after the one who likes Apple. B neither likes Kiwi nor Apple. The one who likes Banana attends two days before D. D neither likes Watermelon nor Kiwi. A attends immediately before F. A does not attend on Monday. G neither like Banana nor Mango. C neither like Mango nor Guava.",q:"Q38. Who among the following person attends the meeting on Friday?",opt:["(a) A","(b) F","(c) C","(d) D","(e) B"],ans:3,exp:"D"},
+    {direction:"Directions (36-40): Study the following information carefully and answer the below questions.",para:"Seven persons- A, B, C, D, E, F, and G attend the meeting on different days of the week starting from Monday to Sunday. They like different fruits- Guava, Orange, Apple, Kiwi, Mango, Banana, and Watermelon. All the information is not necessarily in the same order.<br>B attends three days before the one who likes Watermelon. At least two persons attend before B. Only three persons attend between B and C. The one who likes Kiwi attends immediately after the one who likes Apple. B neither likes Kiwi nor Apple. The one who likes Banana attends two days before D. D neither likes Watermelon nor Kiwi. A attends immediately before F. A does not attend on Monday. G neither like Banana nor Mango. C neither like Mango nor Guava.",q:"Q39. How many persons attend before the one who likes Banana?",opt:["(a) Five","(b) Three","(c) Four","(d) Two","(e) One"],ans:1,exp:"Three"},
+    {direction:"Directions (36-40): Study the following information carefully and answer the below questions.",para:"Seven persons- A, B, C, D, E, F, and G attend the meeting on different days of the week starting from Monday to Sunday. They like different fruits- Guava, Orange, Apple, Kiwi, Mango, Banana, and Watermelon. All the information is not necessarily in the same order.<br>B attends three days before the one who likes Watermelon. At least two persons attend before B. Only three persons attend between B and C. The one who likes Kiwi attends immediately after the one who likes Apple. B neither likes Kiwi nor Apple. The one who likes Banana attends two days before D. D neither likes Watermelon nor Kiwi. A attends immediately before F. A does not attend on Monday. G neither like Banana nor Mango. C neither like Mango nor Guava.",q:"Q40. Which of the following fruit is liked by G?",opt:["(a) Orange","(b) Mango","(c) Apple","(d) Guava","(e) Banana"],ans:0,exp:"Orange"}
+];
+
+let current = 0;
+let answers = {};
+let timeLeft = 1500;
+let timerId;
+const totalQ = questions.length;
+
+function login() {
+    if (document.getElementById('pass').value === "19991010") {
+        document.getElementById('login').classList.remove('active');
+        document.getElementById('instructions').classList.add('active');
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) elem.requestFullscreen().catch(()=>{});
+        else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+        else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+    } else {
+        alert("Wrong Password! Hint: 19991010");
+    }
+}
+
+function startTest() {
+    document.getElementById('instructions').classList.remove('active');
+    document.getElementById('test').classList.add('active');
+    current = 0; answers = {}; timeLeft = 1500;
+    renderPalette();
+    loadQuestion();
+    startTimer();
+}
+
+function startTimer() {
+    clearInterval(timerId);
+    timerId = setInterval(() => {
+        timeLeft--;
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        document.getElementById('timer').textContent = `${m}:${s<10?'0':''}${s}`;
+        if (timeLeft <= 300) document.getElementById('timer').style.color = '#ef4444';
+        if (timeLeft <= 0) submitTest();
+    }, 1000);
+}
+
+function renderPalette() {
+    const pal = document.getElementById('palette');
+    pal.innerHTML = '';
+    for (let i = 0; i < totalQ; i++) {
+        let d = document.createElement('div');
+        d.className = 'q-dot';
+        d.textContent = (i+1);
+        d.onclick = () => { current = i; loadQuestion(); };
+        pal.appendChild(d);
+    }
+}
+
+function loadQuestion() {
+    const q = questions[current];
+    const area = document.getElementById('question-area');
+    let html = '';
+    if (q.direction) html += `<div class="direction">${q.direction}</div>`;
+    if (q.para) html += `<div class="para">${q.para}</div>`;
+    html += `<div class="q-text">${q.q}</div><div id="options"></div>`;
+    area.innerHTML = html;
+
+    const opts = document.getElementById('options');
+    q.opt.forEach((text, i) => {
+        let div = document.createElement('div');
+        div.className = 'option';
+        div.innerHTML = `<span style="font-weight:700;margin-right:16px;">${String.fromCharCode(65+i)}</span>${text}`;
+        div.onclick = () => {
+            if (answers[current] === i) delete answers[current];
+            else answers[current] = i;
+            loadQuestion();
+            updatePalette();
+        };
+        if (answers[current] === i) div.classList.add('selected');
+        opts.appendChild(div);
+    });
+    updatePalette();
+}
+
+function updatePalette() {
+    document.querySelectorAll('.q-dot').forEach((dot, i) => {
+        dot.classList.remove('done', 'current');
+        if (answers[i] !== undefined) dot.classList.add('done');
+        if (i === current) dot.classList.add('current');
+    });
+}
+
+function nextQ() { current = (current + 1) % totalQ; loadQuestion(); }
+function prevQ() { current = (current - 1 + totalQ) % totalQ; loadQuestion(); }
+
+function submitTest() {
+    clearInterval(timerId);
+    let correct = 0, wrong = 0;
+    questions.forEach((q, i) => {
+        if (answers[i] === q.ans) correct++;
+        else if (answers[i] !== undefined) wrong++;
+    });
+    const rawScore = correct - (wrong * 0.25);
+    const accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+
+    document.getElementById('score-main').textContent = rawScore.toFixed(2);
+    document.getElementById('accuracy').textContent = accuracy;
+    document.getElementById('correct').textContent = correct;
+    document.getElementById('wrong').textContent = wrong;
+    const pie = document.getElementById('pie');
+    if (pie) pie.style.strokeDashoffset = 515 - (515 * accuracy / 100);
+
+    document.getElementById('test').classList.remove('active');
+    document.getElementById('score').classList.add('active');
+}
+
+function showAnalysis() {
+    document.getElementById('score').classList.remove('active');
+    document.getElementById('analysis').classList.add('active');
+    let html = '';
+    questions.forEach((q, i) => {
+        let userAns = answers[i];
+        let status = userAns === q.ans ? '<span style="color:#22c55e;font-weight:700;">✓ Correct</span>' :
+                     (userAns !== undefined ? '<span style="color:#ef4444;font-weight:700;">✗ Wrong</span>' : '<span style="color:#ca8a04;">Not attempted</span>');
+        html += `
+        <div style="margin-bottom:40px;padding-bottom:25px;border-bottom:1px solid #e2e8f0;">
+            ${q.direction ? `<div class="direction">${q.direction}</div>` : ''}
+            ${q.para ? `<div class="para">${q.para}</div>` : ''}
+            <div style="font-size:1.25rem;margin-bottom:16px;"><strong>Q${i+1}.</strong> ${q.q}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;">
+                ${q.opt.map((o,idx) => `
+                    <div style="padding:15px;border-radius:12px;background:${idx===q.ans?'#bbf7d0':(idx===userAns?'#fecaca':'#f1f5f9')}">
+                        ${String.fromCharCode(65+idx)}. ${o}
+                    </div>
+                `).join('')}
+            </div>
+            <div style="font-size:1rem;margin-top:10px;">${status}</div>
+            <div style="margin-top:12px;color:#4b5563;">Explanation: ${q.exp}</div>
+        </div>`;
+    });
+    document.getElementById('analysis-content').innerHTML = html;
+}
+
+function backToScore() {
+    document.getElementById('analysis').classList.remove('active');
+    document.getElementById('score').classList.add('active');
+}
+
+function restart() { location.reload(); }
+</script>
+</body>
+</html>
